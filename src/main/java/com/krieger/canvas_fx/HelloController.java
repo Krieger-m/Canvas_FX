@@ -1,13 +1,11 @@
-package com.krieger.mandelbrot_set_fx;
+package com.krieger.canvas_fx;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 
 public class HelloController {

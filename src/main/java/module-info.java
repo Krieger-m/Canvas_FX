@@ -1,9 +1,9 @@
-module com.krieger.mandelbrot_set_fx {
+module com.krieger.canvas_fx {
     requires javafx.controls;
     requires javafx.fxml;
 
     requires org.kordamp.bootstrapfx.core;
 
-    opens com.krieger.mandelbrot_set_fx to javafx.fxml;
-    exports com.krieger.mandelbrot_set_fx;
+    opens com.krieger.canvas_fx to javafx.fxml;
+    exports com.krieger.canvas_fx;
 }
