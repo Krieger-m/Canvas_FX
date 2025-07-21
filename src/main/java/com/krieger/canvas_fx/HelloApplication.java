@@ -17,6 +17,11 @@ import java.util.List;
 
 public class HelloApplication extends Application {
 
+    private static final double MAX_ATTRACTION_DISTANCE = 300;
+    private static final double MIN_ATTRACTION_DISTANCE = 0.1;
+    private static final double ATTRACTION_FORCE = 2500;
+    
+
     private double mouseX;
     private double mouseY;
 
@@ -33,6 +38,8 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(createContent());
 
         scene.setOnMouseMoved(e ->{
+            mouseX = e.getX();
+            mouseY = e.getY();
 
         });
 
@@ -44,17 +51,18 @@ public class HelloApplication extends Application {
 
     public Parent createContent() {
 
-        for (int y = 0; y < 720 /10; y++) {
+        for (int y = 0; y < height /10; y++) {
 
-            for (int x = 0; x < 1080 /10; x++) {
+            for (int x = 0; x < width /10; x++) {
 
-                particles.add(new Particle(x * 10, y *10, Color.BLUEVIOLET));
+                particles.add(new Particle(x* 10 , y* 10, Color.BLUEVIOLET));
             }
-            
         }
         
         Canvas canvas = new Canvas(width,height);
+        
         g = canvas.getGraphicsContext2D();
+        
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -80,22 +88,56 @@ public class HelloApplication extends Application {
         });
     }
 
+
     private static class Particle{
+
         double x;
         double y;
-
         Color color;
+
+        double originalX;
+        double originalY;
+
+
 
         public Particle(double x, double y, Color color) {
             this.x = x;
             this.y = y;
             this.color = color;
+
+            originalX = x;
+            originalY = y;
         }
 
         void update (Point2D cursorDistance) {
+            double distance = cursorDistance.distance(x,y);
+
+            if(distance > MAX_ATTRACTION_DISTANCE){
+                x= originalX;
+                y = originalY;
+            } else if(distance < MIN_ATTRACTION_DISTANCE){
+                x = cursorDistance.getX()/2;
+                y = cursorDistance.getY()/2;
+
+            } else {
+
+                Point2D vector = cursorDistance.subtract(x, y);
+                double scaledLength = ATTRACTION_FORCE * 1 / distance;
+                vector = vector.normalize().multiply(scaledLength);
+
+                x = originalX + vector.getX()/10;
+                y = originalY + vector.getY()/10;
+
+                // c * 1 / d
+                // * ----> x
+                // * -->   x
+
+            }
+
 
         }
     }
+
 
     public static void main(String[] args) {
         launch();
